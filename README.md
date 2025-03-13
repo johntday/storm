@@ -86,6 +86,11 @@ You could also install the source code which allows you to modify the behavior o
    conda create -n storm python=3.11
    conda activate storm
    pip install -r requirements.txt
+   
+   # downgrade sqllite
+   # https://github.com/stanfordnlp/dspy/issues/7825#issuecomment-2683507712
+   conda install sqlite=3.42.0
+   # STILL HAD A PROBLEM 03/12
    ```
    
 
@@ -252,6 +257,22 @@ python examples/storm_examples/run_storm_wiki_gpt.py \
     --do-generate-outline \
     --do-generate-article \
     --do-polish-article
+
+
+usage: run_storm_wiki_gpt.py 
+    [-h] 
+    [--output-dir OUTPUT_DIR] 
+    [--max-thread-num MAX_THREAD_NUM] 
+    [--retriever {bing,you,brave,serper,duckduckgo,tavily,searxng,azure_ai_search}]
+    [--do-research] 
+    [--do-generate-outline] 
+    [--do-generate-article] 
+    [--do-polish-article] 
+    [--max-conv-turn MAX_CONV_TURN]       # Maximum number of questions in conversational question asking
+    [--max-perspective MAX_PERSPECTIVE]   # Maximum number of perspectives to consider in perspective-guided question asking
+    [--search-top-k SEARCH_TOP_K]         # Top k search results to consider for each search query
+    [--retrieve-top-k RETRIEVE_TOP_K]     # Top k collected references for each section title
+    [--remove-duplicate]                  # If True, remove duplicate content from the article
 ```
 
 **To run STORM using your favorite language models or grounding on your own corpus:** Check out [examples/storm_examples/README.md](examples/storm_examples/README.md).
@@ -267,6 +288,25 @@ To run Co-STORM with `gpt` family models with default configurations,
 python examples/costorm_examples/run_costorm_gpt.py \
     --output-dir $OUTPUT_DIR \
     --retriever bing
+
+
+usage: run_costorm_gpt.py 
+    [-h] 
+    [--output-dir OUTPUT_DIR] 
+    [--retriever {bing,you,brave,serper,duckduckgo,tavily,searxng}] 
+    [--retrieve_top_k RETRIEVE_TOP_K]
+    [--max_search_queries MAX_SEARCH_QUERIES] 
+    [--total_conv_turn TOTAL_CONV_TURN] 
+    [--max_search_thread MAX_SEARCH_THREAD]
+    [--max_search_queries_per_turn MAX_SEARCH_QUERIES_PER_TURN] 
+    [--warmstart_max_num_experts WARMSTART_MAX_NUM_EXPERTS]
+    [--warmstart_max_turn_per_experts WARMSTART_MAX_TURN_PER_EXPERTS] 
+    [--warmstart_max_thread WARMSTART_MAX_THREAD] 
+    [--max_thread_num MAX_THREAD_NUM]
+    [--max_num_round_table_experts MAX_NUM_ROUND_TABLE_EXPERTS]
+    [--moderator_override_N_consecutive_answering_turn MODERATOR_OVERRIDE_N_CONSECUTIVE_ANSWERING_TURN]
+    [--node_expansion_trigger_count NODE_EXPANSION_TRIGGER_COUNT] 
+    [--enable_log_print]
 ```
 
 

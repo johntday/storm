@@ -39,6 +39,7 @@ from knowledge_storm.rm import (
     AzureAISearch,
 )
 from knowledge_storm.utils import load_api_key
+from gen_refs import run_generate_references
 
 
 def main(args):
@@ -59,6 +60,7 @@ def main(args):
         "gpt-3.5-turbo" if os.getenv("OPENAI_API_TYPE") == "openai" else "gpt-35-turbo"
     )
     gpt_4_model_name = "gpt-4o"
+    gpt_4_mini_model_name = "gpt-4o-mini"
     if os.getenv("OPENAI_API_TYPE") == "azure":
         openai_kwargs["api_base"] = os.getenv("AZURE_API_BASE")
         openai_kwargs["api_version"] = os.getenv("AZURE_API_VERSION")
@@ -69,10 +71,10 @@ def main(args):
     # for outline_gen_lm which is responsible for organizing the collected information, and article_gen_lm
     # which is responsible for generating sections with citations.
     conv_simulator_lm = ModelClass(
-        model=gpt_35_model_name, max_tokens=500, **openai_kwargs
+        model=gpt_4_mini_model_name, max_tokens=500, **openai_kwargs
     )
     question_asker_lm = ModelClass(
-        model=gpt_35_model_name, max_tokens=500, **openai_kwargs
+        model=gpt_4_mini_model_name, max_tokens=500, **openai_kwargs
     )
     outline_gen_lm = ModelClass(model=gpt_4_model_name, max_tokens=400, **openai_kwargs)
     article_gen_lm = ModelClass(model=gpt_4_model_name, max_tokens=700, **openai_kwargs)
@@ -151,6 +153,9 @@ def main(args):
     )
     runner.post_run()
     runner.summary()
+
+    # POST STEPS
+    run_generate_references(f'{args.output_dir}/{runner.article_dir_name}')
 
 
 if __name__ == "__main__":
